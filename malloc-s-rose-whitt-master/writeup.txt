@@ -1,0 +1,41 @@
+COMP 321 Project 5: Malloc
+Rose Whitt & Madison Roy; rew9 & mmr11
+
+---(Do not write lines of text that exceed the width of this line.)------------
+
+DESIGN DESCRIPTION
+
+    For our memory allocator, we followed method 3 and implemented the
+segregated fits model. During our processes, we struggled to debug our
+implementation, so we decided to switch to method 2: explicit free list.
+    We began with an explicit free list using a doubly linked list,
+not circular. Once that passed all the tests, we switched to circular.
+We knew that we would ultimately want to implement segregated fits
+using circular linked lists, so this gave us a strong foundation to develop
+method 3. Once circular passed everything, we converted our program to follow
+the segregated fits model as we originally planned.
+    We used a circular doubly linked list with dummy headers to store our
+available memory. Each "bucket" in our array of free lists represents a
+memory range (2^1 - 2^15) and we use a helper to decide which free list
+each block should go in.
+    One design decision that is particularly 
+noteworthy is our design for mm_realloc. For this function, we wanted to 
+minimize the number of times that memcopy is called, since it is a large and 
+expensive function. We approached this by over-allocating memory fewer times,
+rather than allocating exactly the right amount on more occasions.
+
+TESTING STRATEGY
+
+We tested our implementation with the provided short traces, as well as the
+eleven official traces in the malloc folder. We believe that this testing is
+sufficient because they cover all possible inputs to the code: allocate, free,
+and reallocate. Testing with all of the traces gave us confidence in our 
+implementation because originally we failed some of the traces. This was
+particularly relevant in regards to our realloc function. We consistently
+failed traces 9 and 10, with an error describing that we had not saved the 
+memory from the old block. With this insight, we were able to change our 
+approach to realloc and successfully pass all of the traces with a score
+that we are satisfied with. Additionally, we modified the provided 
+checkheap function to ive us more details about both the free list and the
+heap. This helped us with debugging, as we were able to visualize where
+errors were occuring.
